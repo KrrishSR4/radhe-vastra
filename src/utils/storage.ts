@@ -24,6 +24,23 @@ export const saveProduct = (product: ProductInput): Product => {
   return newProduct;
 };
 
+export const updateProduct = (id: string, productData: ProductInput): Product | null => {
+  const products = getProducts();
+  const index = products.findIndex(p => p.id === id);
+  
+  if (index === -1) return null;
+  
+  const updatedProduct: Product = {
+    ...productData,
+    id: products[index].id,
+    createdAt: products[index].createdAt,
+  };
+  
+  products[index] = updatedProduct;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+  return updatedProduct;
+};
+
 export const deleteProduct = (id: string): void => {
   const products = getProducts().filter(p => p.id !== id);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(products));

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { X, Upload, Trash2, Plus } from 'lucide-react';
+import { X, Upload, Trash2, Plus, Edit2 } from 'lucide-react';
 import { ProductInput } from '@/types/product';
-import { saveProduct, getProducts, deleteProduct, clearAllProducts } from '@/utils/storage';
+import { saveProduct, getProducts, deleteProduct, clearAllProducts, updateProduct } from '@/utils/storage';
 import { toast } from 'sonner';
 
 interface AdminPanelProps {
@@ -21,6 +21,7 @@ const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
   const [imagePreview, setImagePreview] = useState<string>('');
   const [products, setProducts] = useState(getProducts());
   const [sizeInput, setSizeInput] = useState('');
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -71,8 +72,20 @@ const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
       return;
     }
 
-    saveProduct(formData);
-    toast.success('Product added successfully!');
+    if (editingId) {
+      // Update existing product
+      const updated = updateProduct(editingId, formData);
+      if (updated) {
+        toast.success('Product updated successfully!');
+      } else {
+        toast.error('Failed to update product');
+        return;
+      }
+    } else {
+      // Add new product
+      saveProduct(formData);
+      toast.success('Product added successfully!');
+    }
     
     // Reset form
     setFormData({
@@ -84,13 +97,50 @@ const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
       image: '',
     });
     setImagePreview('');
+    setEditingId(null);
     setProducts(getProducts());
     
     // Dispatch event to update shop
     window.dispatchEvent(new Event('productsUpdated'));
   };
 
+  const handleEdit = (id: string) => {
+    const product = products.find(p => p.id === id);
+    if (product) {
+      setFormData({
+        title: product.title,
+        price: product.price,
+        type: product.type,
+        description: product.description,
+        sizes: product.sizes,
+        image: product.image,
+      });
+      setImagePreview(product.image);
+      setEditingId(id);
+      // Scroll to form
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      toast.info('Editing product');
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setFormData({
+      title: '',
+      price: 0,
+      type: '',
+      description: '',
+      sizes: [],
+      image: '',
+    });
+    setImagePreview('');
+    setEditingId(null);
+    toast.info('Edit cancelled');
+  };
+
   const handleDelete = (id: string) => {
+    if (editingId === id) {
+      handleCancelEdit();
+    }
     deleteProduct(id);
     toast.success('Product deleted');
     setProducts(getProducts());
@@ -122,9 +172,22 @@ const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
         </div>
 
         <div className="p-6 space-y-8">
-          {/* Add Product Form */}
+          {/* Add/Edit Product Form */}
           <div className="bg-card p-6 rounded-xl">
-            <h3 className="text-xl font-semibold mb-4">Add New Product</h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-semibold">
+                {editingId ? 'Edit Product' : 'Add New Product'}
+              </h3>
+              {editingId && (
+                <button
+                  type="button"
+                  onClick={handleCancelEdit}
+                  className="px-4 py-2 text-sm bg-muted hover:bg-muted/80 rounded-lg transition-colors"
+                >
+                  Cancel Edit
+                </button>
+              )}
+            </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
@@ -234,7 +297,7 @@ const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
                 type="submit"
                 className="w-full px-6 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:opacity-90 transition-opacity"
               >
-                Add Product
+                {editingId ? 'Update Product' : 'Add Product'}
               </button>
             </form>
           </div>
@@ -274,12 +337,22 @@ const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
                         {product.type} • ₹{product.price} • {product.sizes.join(', ')}
                       </p>
                     </div>
-                    <button
-                      onClick={() => handleDelete(product.id)}
-                      className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
-                    >
-                      <Trash2 className="w-5 h-5" />
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleEdit(product.id)}
+                        className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                        title="Edit product"
+                      >
+                        <Edit2 className="w-5 h-5" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(product.id)}
+                        className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
+                        title="Delete product"
+                      >
+                        <Trash2 className="w-5 h-5" />
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
