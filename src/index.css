@@ -50,9 +50,14 @@ All colors MUST be HSL.
     
     /* Shadows */
     --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    --shadow-subtle: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
     --shadow-md: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
+    --shadow-strong: 0 8px 24px -4px rgba(0, 0, 0, 0.15);
     --shadow-lg: 0 10px 30px -5px rgba(0, 0, 0, 0.12);
     --shadow-hover: 0 15px 35px -5px rgba(0, 0, 0, 0.15);
+    --shadow-xl: 0 20px 50px -10px rgba(0, 0, 0, 0.25);
+    --shadow-2xl: 0 25px 60px -15px rgba(0, 0, 0, 0.3);
+    --shadow-3xl: 0 30px 70px -15px rgba(0, 0, 0, 0.35);
     
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -121,11 +126,12 @@ All colors MUST be HSL.
   
   .hover-lift {
     transition: var(--transition-smooth);
+    box-shadow: var(--shadow-subtle);
   }
   
   .hover-lift:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-hover);
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-strong);
   }
   
   .hover-zoom img {
@@ -133,7 +139,7 @@ All colors MUST be HSL.
   }
   
   .hover-zoom:hover img {
-    transform: scale(1.1);
+    transform: scale(1.08);
   }
   
   .glass-effect {

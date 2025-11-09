@@ -13,20 +13,20 @@ const Hero = () => {
       <div className="container mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="animate-fade-in space-y-6">
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground leading-tight">
-              Modern Minimal
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground leading-tight drop-shadow-lg">
+              Premium
               <br />
-              <span className="text-primary">Clothing</span>
+              <span className="text-primary">Product Showcase</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-md">
-              Grey & White theme, smooth animations, and responsive design.
-              Experience premium fashion with elegant simplicity.
+              Explore our curated collection at RADHE VASTRA.
+              Discover elegant designs with modern aesthetics.
             </p>
             <button
               onClick={scrollToShop}
-              className="group relative px-8 py-4 bg-primary text-primary-foreground font-medium rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+              className="group relative px-8 py-4 bg-primary text-primary-foreground font-medium rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 shadow-lg"
             >
-              <span className="relative z-10">Explore Collection</span>
+              <span className="relative z-10">View Collection</span>
               <div className="absolute inset-0 bg-foreground transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
             </button>
           </div>

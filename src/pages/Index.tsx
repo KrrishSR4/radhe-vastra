@@ -8,8 +8,9 @@ import About from '@/components/About';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import AdminPanel from '@/components/AdminPanel';
+import ScrollToTop from '@/components/ScrollToTop';
 
-const ADMIN_PASSPHRASE = 'krishadmin';
+const ADMIN_PASSPHRASE = 'radheradhe';
 
 const Index = () => {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
@@ -42,6 +43,7 @@ const Index = () => {
       <About />
       <Contact />
       <Footer />
+      <ScrollToTop />
       <AdminPanel isOpen={isAdminOpen} onClose={() => setIsAdminOpen(false)} />
     </div>
   );

@@ -1,30 +1,24 @@
-import { Mail, Phone } from 'lucide-react';
+import { Mail, Phone, MessageCircle } from 'lucide-react';
 
 const Contact = () => {
   const contacts = [
     {
       icon: Mail,
-      label: 'Your Email',
-      value: 'customer@krishclothing.com',
-      type: 'email',
+      label: 'Email',
+      value: 'arcmit@gmail.com',
+      link: 'mailto:arcmit@gmail.com',
     },
     {
       icon: Phone,
-      label: 'Your Phone',
-      value: '+91-98765XXXXX',
-      type: 'phone',
+      label: 'Phone',
+      value: '+91 6204010958',
+      link: 'tel:+916204010958',
     },
     {
-      icon: Mail,
-      label: 'My Email',
-      value: 'krish@example.com',
-      type: 'email',
-    },
-    {
-      icon: Phone,
-      label: 'My Phone',
-      value: '+91-12345XXXXX',
-      type: 'phone',
+      icon: MessageCircle,
+      label: 'WhatsApp',
+      value: '+91 6204010958',
+      link: 'https://wa.me/6204010958',
     },
   ];
 
@@ -40,21 +34,24 @@ const Contact = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
           {contacts.map((contact, index) => (
-            <div
+            <a
               key={index}
-              className="bg-card p-8 rounded-xl shadow-sm hover-lift animate-scale-in text-center"
+              href={contact.link}
+              target={contact.label === 'WhatsApp' ? '_blank' : undefined}
+              rel={contact.label === 'WhatsApp' ? 'noopener noreferrer' : undefined}
+              className="bg-card p-8 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 animate-scale-in text-center transition-all duration-300 cursor-pointer group"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <contact.icon className="w-7 h-7 text-primary" />
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors duration-300 shadow-md">
+                <contact.icon className="w-8 h-8 text-primary group-hover:scale-110 transition-transform duration-300" />
               </div>
-              <p className="text-sm text-muted-foreground mb-2">{contact.label}</p>
-              <p className="font-medium text-card-foreground break-words">
+              <p className="text-sm text-muted-foreground mb-2 font-semibold">{contact.label}</p>
+              <p className="font-medium text-card-foreground break-words group-hover:text-primary transition-colors duration-300">
                 {contact.value}
               </p>
-            </div>
+            </a>
           ))}
         </div>
       </div>

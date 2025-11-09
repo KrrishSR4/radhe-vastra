@@ -21,13 +21,13 @@ const Header = () => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'glass-effect shadow-md' : 'bg-transparent'
+        isScrolled ? 'bg-muted/95 backdrop-blur-sm shadow-lg' : 'bg-muted/90 backdrop-blur-sm'
       }`}
     >
-      <div className="container mx-auto px-6 py-4">
+      <div className="container mx-auto px-6 py-5">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">
-            Krish Clothing
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground hover:text-primary transition-colors duration-300 drop-shadow-md">
+            RADHE VASTRA
           </h1>
           
           <nav className="hidden md:flex items-center gap-8">
