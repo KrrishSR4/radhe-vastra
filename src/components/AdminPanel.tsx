@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, Upload, Trash2, Plus, Edit2 } from 'lucide-react';
 import { ProductInput } from '@/types/product';
-import { saveProduct, getProducts, deleteProduct, clearAllProducts, updateProduct } from '@/utils/storage';
+import { saveProduct, getProducts, deleteProduct, clearAllProducts, updateProduct, uploadImage } from '@/utils/storage';
 import { toast } from 'sonner';
 
 interface AdminPanelProps {
@@ -29,34 +29,43 @@ const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
     }
   }, [isOpen]);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const result = reader.result as string;
-        setImagePreview(result);
-        setFormData({ ...formData, image: result });
-      };
-      reader.readAsDataURL(file);
+      try {
+        // Show preview
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const result = reader.result as string;
+          setImagePreview(result);
+        };
+        reader.readAsDataURL(file);
+
+        // Upload to Supabase
+        const imageUrl = await uploadImage(file);
+          setFormData(prev => ({ ...prev, image: imageUrl }));
+        toast.success('Image uploaded successfully');
+      } catch (error) {
+        toast.error('Error uploading image: ' + error.message);
+      }
     }
   };
 
   const handleAddSize = () => {
-    if (sizeInput.trim() && !formData.sizes.includes(sizeInput.trim())) {
-      setFormData({
-        ...formData,
-        sizes: [...formData.sizes, sizeInput.trim()],
-      });
+    if (sizeInput.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        sizes: prev.sizes.includes(sizeInput.trim()) ? prev.sizes : [...prev.sizes, sizeInput.trim()],
+      }));
       setSizeInput('');
     }
   };
 
   const handleRemoveSize = (size: string) => {
-    setFormData({
-      ...formData,
-      sizes: formData.sizes.filter(s => s !== size),
-    });
+    setFormData(prev => ({
+      ...prev,
+      sizes: prev.sizes.filter(s => s !== size),
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -195,7 +204,7 @@ const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
                   <input
                     type="text"
                     value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary"
                     required
                   />
@@ -206,7 +215,7 @@ const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
                   <input
                     type="number"
                     value={formData.price}
-                    onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
+                      onChange={(e) => setFormData(prev => ({ ...prev, price: Number(e.target.value) }))}
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary"
                     required
                   />
@@ -217,7 +226,7 @@ const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
                   <input
                     type="text"
                     value={formData.type}
-                    onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                      onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value }))}
                     placeholder="e.g., Shirt, Hoodie"
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary"
                     required
@@ -267,7 +276,7 @@ const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
                 <label className="block text-sm font-medium mb-2">Description</label>
                 <textarea
                   value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                   className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary"
                   rows={3}
                   required
