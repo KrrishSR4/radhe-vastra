@@ -15,8 +15,6 @@ const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
     price: 0,
     oldPrice: 0,
     discountPercent: 0,
-    wowPrice: 0,
-    offers: '',
     description: '',
     sizes: [],
     image: '',
@@ -144,8 +142,6 @@ const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
         price: 0,
         oldPrice: 0,
         discountPercent: 0,
-        wowPrice: 0,
-        offers: '',
         description: '',
         sizes: [],
         image: '',
@@ -172,8 +168,6 @@ const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
         price: product.price,
         oldPrice: product.oldPrice || 0,
         discountPercent: product.discountPercent || 0,
-        wowPrice: product.wowPrice || 0,
-        offers: product.offers || '',
         type: product.type || '',
         description: product.description,
         sizes: product.sizes,
@@ -193,8 +187,6 @@ const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
       price: 0,
       oldPrice: 0,
       discountPercent: 0,
-      wowPrice: 0,
-      offers: '',
       description: '',
       sizes: [],
       image: '',
@@ -370,26 +362,7 @@ const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-2">WOW Price (₹)</label>
-                  <input
-                    type="number"
-                    value={formData.wowPrice}
-                    onChange={(e) => setFormData((prev: any) => ({ ...prev, wowPrice: Number(e.target.value) }))}
-                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary"
-                  />
-                </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-2">Offers</label>
-                  <input
-                    type="text"
-                    value={formData.offers}
-                    onChange={(e) => setFormData((prev: any) => ({ ...prev, offers: e.target.value }))}
-                    placeholder="e.g., 2 offers, 3 offers"
-                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary"
-                  />
-                </div>
 
                 <div>
                   <label className="block text-sm font-medium mb-2">Sizes</label>
@@ -514,16 +487,7 @@ const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
                         <span style={{ fontWeight: 'bold', marginRight: 8 }}>
                           ₹{product.price}
                         </span>
-                        {product.wowPrice && (
-                          <span style={{ background: '#e0e0e0', borderRadius: 4, padding: '2px 6px', marginRight: 8 }}>
-                            WOW ₹{product.wowPrice}
-                          </span>
-                        )}
-                        {product.offers && (
-                          <span style={{ color: '#1976d2', fontWeight: 'bold' }}>
-                            {product.offers}
-                          </span>
-                        )}
+
                         <span style={{ marginLeft: 8 }}>
                           {product.sizes.join(', ')}
                         </span>
