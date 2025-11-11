@@ -9,16 +9,23 @@ const Shop = () => {
   useEffect(() => {
     loadProducts();
     
-    // Listen for storage changes from admin panel
+    // Listen for storage changes from admin panel (same tab)
     const handleStorageChange = () => {
       loadProducts();
     };
     window.addEventListener('storage', handleStorageChange);
     window.addEventListener('productsUpdated', handleStorageChange);
     
+    // Auto-refresh products every 30 seconds to show new products added by admin
+    // This ensures users see new products without manually refreshing the page
+    const refreshInterval = setInterval(() => {
+      loadProducts();
+    }, 30000); // Refresh every 30 seconds
+    
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('productsUpdated', handleStorageChange);
+      clearInterval(refreshInterval);
     };
   }, []);
 
