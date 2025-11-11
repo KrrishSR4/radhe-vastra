@@ -17,14 +17,38 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <div className="p-6 space-y-3">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
-              {product.type}
-            </p>
+            {product.type && (
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
+                {product.type}
+              </p>
+            )}
             <h3 className="font-semibold text-lg text-card-foreground group-hover:text-primary transition-colors">
               {product.title}
             </h3>
           </div>
-          <p className="text-xl font-bold text-primary">₹{product.price}</p>
+        </div>
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 flex-wrap">
+            {product.oldPrice && product.oldPrice > 0 && (
+              <span className="text-sm text-muted-foreground line-through">
+                ₹{product.oldPrice}
+              </span>
+            )}
+            {product.discountPercent && product.discountPercent > 0 && (
+              <span className="text-sm font-semibold text-green-600">
+                {product.discountPercent}% OFF
+              </span>
+            )}
+            <span className="text-xl font-bold text-primary">₹{product.price}</span>
+            {product.wowPrice && product.wowPrice > 0 && (
+              <span className="text-xs bg-muted px-2 py-1 rounded">
+                WOW ₹{product.wowPrice}
+              </span>
+            )}
+          </div>
+          {product.offers && (
+            <p className="text-xs text-blue-600 font-medium">{product.offers}</p>
+          )}
         </div>
         <p className="text-sm text-muted-foreground line-clamp-2">
           {product.description}

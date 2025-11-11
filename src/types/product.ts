@@ -2,11 +2,16 @@ export interface Product {
   id: string;
   title: string;
   price: number;
-  type: string;
+  oldPrice?: number;
+  discountPercent?: number;
+  wowPrice?: number;
+  offers?: string;
+  type?: string;
   description: string;
   sizes: string[];
-  image: string; // base64 encoded image
-  createdAt: string;
+  image: string;
+  created_at?: string;
+  createdAt?: string;
 }
 
-export type ProductInput = Omit<Product, 'id' | 'createdAt'>;
+export type ProductInput = Omit<Product, 'id' | 'created_at' | 'createdAt'>;

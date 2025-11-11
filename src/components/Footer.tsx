@@ -16,7 +16,7 @@ const Footer = () => {
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === "radheradhe") {
+    if (password === "Apriye6213kaithe") {
       setIsDialogOpen(false);
       setIsAdminOpen(true);
       setPassword("");
@@ -32,7 +32,7 @@ const Footer = () => {
           <p className="text-sm font-medium">
             Made with{" "}
             <span onClick={handleHeartClick} className="cursor-pointer hover:scale-110 inline-block transition-transform">
-              ❤️
+              🖤
             </span>
             {" "}— AMIT GUPTA
           </p>

@@ -22,8 +22,9 @@ const Shop = () => {
     };
   }, []);
 
-  const loadProducts = () => {
-    setProducts(getProducts());
+  const loadProducts = async () => {
+    const data = await getProducts();
+    setProducts(data || []);
   };
 
   return (
